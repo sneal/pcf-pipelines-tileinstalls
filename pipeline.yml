@@ -12,7 +12,7 @@ resources:
     uri: https://github.com/sneal/pcf-pipelines.git
     branch: master
 
-- name: pcf-pipelines-tileinstall
+- name: pcf-pipelines-tileinstalls
   type: git
   source:
     uri: https://github.com/sneal/pcf-pipelines-tileinstalls.git
@@ -63,9 +63,9 @@ jobs:
     - get: pcf-pipelines
       passed: [upload-product]
       trigger: true
-    - get: pcf-pipelines-tileinstall
+    - get: pcf-pipelines-tileinstalls
   - task: config-tile
-    file: pcf-pipelines-tileinstall/tasks/config-mysql/task.yml
+    file: pcf-pipelines-tileinstalls/tasks/config-mysql/task.yml
     params:
       PRODUCT_NAME: {{product_name}}
       OPS_MGR_HOST: {{opsman_domain_or_ip_address}}
