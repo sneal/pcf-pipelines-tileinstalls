@@ -7,10 +7,10 @@ image_resource:
     repository: pcfnorm/rootfs
 
 params:
+  OPSMAN_DOMAIN_OR_IP_ADDRESS:
+  OPSMAN_USERNAME:
+  OPSMAN_PASSWORD:
   PRODUCT_NAME:
-  OPS_MGR_HOST:
-  OPS_MGR_USR:
-  OPS_MGR_PWD:
   SINGLETON_JOBS_AZ:
   OTHER_AZS:
   NETWORK_NAME:
@@ -95,9 +95,7 @@ params:
   MYSQL_BROKER_INSTANCES:
 
 inputs:
-  - name: pipelines-repo
-  - name: om-cli
-  - name: jq
+  - name: pcf-pipelines-tileinstalls
 
 run:
-  path: pipelines-repo/tasks/config-mysql/task.sh
+  path: pcf-pipelines-tileinstalls/tasks/config-mysql/task.sh

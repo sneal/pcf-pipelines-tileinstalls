@@ -1,14 +1,8 @@
 #!/bin/bash -ex
 
-chmod +x om-cli/om-linux
-OM_CMD=./om-cli/om-linux
-
-chmod +x ./jq/jq-linux64
-JQ_CMD=./jq/jq-linux64
-
 PRODUCT_PROPERTIES=$(
   echo "{}" |
-  $JQ_CMD -n \
+  jq -n \
     --arg backup_options "$BACKUP_OPTIONS" \
     --arg backup_options_cron_schedule "$BACKUP_OPTIONS_CRON_SCHEDULE" \
     --argjson backup_options_backup_all_masters $BACKUP_OPTIONS_BACKUP_ALL_MASTERS \
@@ -354,7 +348,7 @@ PRODUCT_PROPERTIES=$(
 
 PRODUCT_NETWORK=$(
   echo "{}" |
-  $JQ_CMD -n \
+  jq -n \
     --arg singleton_jobs_az "$SINGLETON_JOBS_AZ" \
     --arg other_azs "$OTHER_AZS" \
     --arg network_name "$NETWORK_NAME" \
@@ -373,7 +367,7 @@ PRODUCT_NETWORK=$(
 
 PRODUCT_RESOURCE=$(
   echo "{}" |
-  $JQ_CMD -n \
+  jq -n \
     --arg mysql_server_instance_type "$MYSQL_SERVER_INSTANCE_TYPE" \
     --argjson mysql_server_instances $MYSQL_SERVER_INSTANCES \
     --arg mysql_persistent_disk_mb "$MYSQL_PERSISTENT_DISK_MB" \
@@ -414,4 +408,13 @@ PRODUCT_RESOURCE=$(
     '
 )
 
-$OM_CMD -t https://$OPS_MGR_HOST -u $OPS_MGR_USR -p $OPS_MGR_PWD -k configure-product -n $PRODUCT_NAME -p "$PRODUCT_PROPERTIES" -pn "$PRODUCT_NETWORK" -pr "$PRODUCT_RESOURCE"
+om-linux
+  --target "https://${OPSMAN_DOMAIN_OR_IP_ADDRESS}" \
+  --skip-ssl-validation \
+  --username "${OPSMAN_USERNAME}" \
+  --password "${OPSMAN_PASSWORD}" \
+  configure-product \
+  -n $PRODUCT_NAME \
+  -p "$PRODUCT_PROPERTIES" \
+  -pn "$PRODUCT_NETWORK" \
+  -pr "$PRODUCT_RESOURCE"
