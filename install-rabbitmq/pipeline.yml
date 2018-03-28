@@ -1,0 +1,190 @@
+resource_types:
+- name: pivnet
+  type: docker-image
+  source:
+    repository: pivotalcf/pivnet-resource
+    tag: latest-final
+
+resources:
+- name: pcf-pipelines
+  type: git
+  source:
+    uri: https://github.com/sneal/pcf-pipelines.git
+    branch: master
+
+- name: pcf-pipelines-tileinstalls
+  type: git
+  source:
+    uri: https://github.com/sneal/pcf-pipelines-tileinstalls.git
+    branch: master
+
+- name: pivnet-product
+  type: pivnet
+  source:
+    api_token: {{pivnet_token}}
+    product_slug: {{product_name}}
+    product_version: {{product_version}}
+
+jobs:
+- name: upload-product
+  plan:
+  - aggregate:
+    - get: pcf-pipelines
+    - get: pivnet-product
+      resource: pivnet-product
+      params:
+        globs:
+        - "*.pivotal"
+      trigger: true
+  - task: upload-tile
+    file: pcf-pipelines/tasks/upload-product-and-stemcell/task.yml
+    params:
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
+      OPS_MGR_USR: {{opsman_admin_username}}
+      OPS_MGR_PWD: {{opsman_admin_password}}
+      PIVNET_API_TOKEN: {{pivnet_token}}
+      IAAS: "aws"
+      NO_PROXY: ""
+      OM_IP: ""
+      OPSMAN_CLIENT_ID: ""
+      OPSMAN_CLIENT_SECRET: ""
+  - task: stage-tile
+    file: pcf-pipelines/tasks/stage-product/task.yml
+    params:
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
+      OPSMAN_USERNAME: {{opsman_admin_username}}
+      OPSMAN_PASSWORD: {{opsman_admin_password}}
+      OPSMAN_CLIENT_ID: ""
+      OPSMAN_CLIENT_SECRET: ""
+
+- name: config-product
+  plan:
+  - aggregate:
+    - get: pcf-pipelines
+      passed: [upload-product]
+      trigger: true
+    - get: pcf-pipelines-tileinstalls
+  - task: config-tile
+    file: pcf-pipelines-tileinstalls/tasks/config-rabbitmq/task.yml
+    params:
+      PRODUCT_IDENTIFIER: {{product_identifier}}
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
+      OPSMAN_USERNAME: {{opsman_admin_username}}
+      OPSMAN_PASSWORD: {{opsman_admin_password}}
+      OPS_MGR_GENERATE_SSL_ENDPOINT: {{ops_mgr_generate_ssl_endpoint}}
+      SINGLETON_JOBS_AZ: {{singleton_jobs_az}}
+      OTHER_AZS: {{other_azs}}
+      NETWORK_NAME: {{network_name}}
+      SERVICES_NETWORK_NAME: {{services_network_name}}
+      METRICS_POLLING_INTERVAL: {{metrics_polling_interval}}
+      SYSLOG_SELECTOR: {{syslog_selector}}
+      SYSLOG_SELECTOR_ADDRESS: {{syslog_selector_address}}
+      SYSLOG_SELECTOR_PORT: {{syslog_selector_port}}
+      SYSLOG_SELECTOR_SYSLOG_TRANSPORT: {{syslog_selector_syslog_transport}}
+      SYSLOG_SELECTOR_SYSLOG_FORMAT: {{syslog_selector_syslog_format}}
+      SYSLOG_SELECTOR_SYSLOG_TLS: {{syslog_selector_syslog_tls}}
+      SYSLOG_SELECTOR_SYSLOG_PERMITTED_PEER: {{syslog_selector_syslog_permitted_peer}}
+      SYSLOG_SELECTOR_SYSLOG_CA_CERT: {{syslog_selector_syslog_ca_cert}}
+      ON_DEMAND_BROKER_VM_EXTENSIONS: {{on_demand_broker_vm_extensions}}
+      ON_DEMAND_BROKER_PLAN_1_CF_SERVICE_ACCESS: {{on_demand_broker_plan_1_cf_service_access}}
+      ON_DEMAND_BROKER_PLAN_1_NAME: {{on_demand_broker_plan_1_name}}
+      ON_DEMAND_BROKER_PLAN_1_DESCRIPTION: {{on_demand_broker_plan_1_description}}
+      ON_DEMAND_BROKER_PLAN_1_INSTANCE_QUOTA: {{on_demand_broker_plan_1_instance_quota}}
+      ON_DEMAND_BROKER_PLAN_1_FEATURES: {{on_demand_broker_plan_1_features}}
+      ON_DEMAND_BROKER_PLAN_1_RABBITMQ_AZ_PLACEMENT: {{on_demand_broker_plan_1_rabbitmq_az_placement}}
+      ON_DEMAND_BROKER_PLAN_1_RABBITMQ_VM_TYPE: {{on_demand_broker_plan_1_rabbitmq_vm_type}}
+      ON_DEMAND_BROKER_PLAN_1_RABBITMQ_PERSISTENT_DISK_TYPE: {{on_demand_broker_plan_1_rabbitmq_persistent_disk_type}}
+      ON_DEMAND_BROKER_PLAN_1_DISK_LIMIT_ACKNOWLEDGEMENT: {{on_demand_broker_plan_1_disk_limit_acknowledgement}}
+      ON_DEMAND_BROKER_PLAN_2_SELECTOR: {{on_demand_broker_plan_2_selector}}
+      ON_DEMAND_BROKER_PLAN_2_SELECTOR_CF_SERVICE_ACCESS: {{on_demand_broker_plan_2_selector_cf_service_access}}
+      ON_DEMAND_BROKER_PLAN_2_SELECTOR_NAME: {{on_demand_broker_plan_2_selector_name}}
+      ON_DEMAND_BROKER_PLAN_2_SELECTOR_DESCRIPTION: {{on_demand_broker_plan_2_selector_description}}
+      ON_DEMAND_BROKER_PLAN_2_SELECTOR_FEATURES: {{on_demand_broker_plan_2_selector_features}}
+      ON_DEMAND_BROKER_PLAN_2_SELECTOR_INSTANCE_QUOTA: {{on_demand_broker_plan_2_selector_instance_quota}}
+      ON_DEMAND_BROKER_PLAN_2_SELECTOR_RABBITMQ_PERSISTENT_DISK_TYPE: {{on_demand_broker_plan_2_selector_rabbitmq_persistent_disk_type}}
+      ON_DEMAND_BROKER_PLAN_2_SELECTOR_RABBITMQ_NUMBER_OF_NODES: {{on_demand_broker_plan_2_selector_rabbitmq_number_of_nodes}}
+      ON_DEMAND_BROKER_PLAN_2_SELECTOR_RABBITMQ_CLUSTER_PARTITION_HANDLING_STRATEGY: {{on_demand_broker_plan_2_selector_rabbitmq_cluster_partition_handling_strategy}}
+      ON_DEMAND_BROKER_PLAN_2_SELECTOR_RABBITMQ_AZ_PLACEMENT: {{on_demand_broker_plan_2_selector_rabbitmq_az_placement}}
+      ON_DEMAND_BROKER_PLAN_2_SELECTOR_RABBITMQ_VM_TYPE: {{on_demand_broker_plan_2_selector_rabbitmq_vm_type}}
+      ON_DEMAND_BROKER_PLAN_2_SELECTOR_DISK_LIMIT_ACKNOWLEDGEMENT: {{on_demand_broker_plan_2_selector_disk_limit_acknowledgement}}
+      ON_DEMAND_BROKER_PLAN_3_SELECTOR: {{on_demand_broker_plan_3_selector}}
+      ON_DEMAND_BROKER_PLAN_3_SELECTOR_CF_SERVICE_ACCESS: {{on_demand_broker_plan_3_selector_cf_service_access}}
+      ON_DEMAND_BROKER_PLAN_3_SELECTOR_NAME: {{on_demand_broker_plan_3_selector_name}}
+      ON_DEMAND_BROKER_PLAN_3_SELECTOR_DESCRIPTION: {{on_demand_broker_plan_3_selector_description}}
+      ON_DEMAND_BROKER_PLAN_3_SELECTOR_FEATURES: {{on_demand_broker_plan_3_selector_features}}
+      ON_DEMAND_BROKER_PLAN_3_SELECTOR_INSTANCE_QUOTA: {{on_demand_broker_plan_3_selector_instance_quota}}
+      ON_DEMAND_BROKER_PLAN_3_SELECTOR_RABBITMQ_PERSISTENT_DISK_TYPE: {{on_demand_broker_plan_3_selector_rabbitmq_persistent_disk_type}}
+      ON_DEMAND_BROKER_PLAN_3_SELECTOR_RABBITMQ_NUMBER_OF_NODES: {{on_demand_broker_plan_3_selector_rabbitmq_number_of_nodes}}
+      ON_DEMAND_BROKER_PLAN_3_SELECTOR_RABBITMQ_CLUSTER_PARTITION_HANDLING_STRATEGY: {{on_demand_broker_plan_3_selector_rabbitmq_cluster_partition_handling_strategy}}
+      ON_DEMAND_BROKER_PLAN_3_SELECTOR_RABBITMQ_AZ_PLACEMENT: {{on_demand_broker_plan_3_selector_rabbitmq_az_placement}}
+      ON_DEMAND_BROKER_PLAN_3_SELECTOR_RABBITMQ_VM_TYPE: {{on_demand_broker_plan_3_selector_rabbitmq_vm_type}}
+      ON_DEMAND_BROKER_PLAN_3_SELECTOR_DISK_LIMIT_ACKNOWLEDGEMENT: {{on_demand_broker_plan_3_selector_disk_limit_acknowledgement}}
+      ON_DEMAND_BROKER_PLAN_4_SELECTOR: {{on_demand_broker_plan_4_selector}}
+      ON_DEMAND_BROKER_PLAN_4_SELECTOR_CF_SERVICE_ACCESS: {{on_demand_broker_plan_4_selector_cf_service_access}}
+      ON_DEMAND_BROKER_PLAN_4_SELECTOR_NAME: {{on_demand_broker_plan_4_selector_name}}
+      ON_DEMAND_BROKER_PLAN_4_SELECTOR_DESCRIPTION: {{on_demand_broker_plan_4_selector_description}}
+      ON_DEMAND_BROKER_PLAN_4_SELECTOR_FEATURES: {{on_demand_broker_plan_4_selector_features}}
+      ON_DEMAND_BROKER_PLAN_4_SELECTOR_INSTANCE_QUOTA: {{on_demand_broker_plan_4_selector_instance_quota}}
+      ON_DEMAND_BROKER_PLAN_4_SELECTOR_RABBITMQ_PERSISTENT_DISK_TYPE: {{on_demand_broker_plan_4_selector_rabbitmq_persistent_disk_type}}
+      ON_DEMAND_BROKER_PLAN_4_SELECTOR_RABBITMQ_NUMBER_OF_NODES: {{on_demand_broker_plan_4_selector_rabbitmq_number_of_nodes}}
+      ON_DEMAND_BROKER_PLAN_4_SELECTOR_RABBITMQ_CLUSTER_PARTITION_HANDLING_STRATEGY: {{on_demand_broker_plan_4_selector_rabbitmq_cluster_partition_handling_strategy}}
+      ON_DEMAND_BROKER_PLAN_4_SELECTOR_RABBITMQ_AZ_PLACEMENT: {{on_demand_broker_plan_4_selector_rabbitmq_az_placement}}
+      ON_DEMAND_BROKER_PLAN_4_SELECTOR_RABBITMQ_VM_TYPE: {{on_demand_broker_plan_4_selector_rabbitmq_vm_type}}
+      ON_DEMAND_BROKER_PLAN_4_SELECTOR_DISK_LIMIT_ACKNOWLEDGEMENT: {{on_demand_broker_plan_4_selector_disk_limit_acknowledgement}}
+      ON_DEMAND_BROKER_PLAN_5_SELECTOR: {{on_demand_broker_plan_5_selector}}
+      ON_DEMAND_BROKER_PLAN_5_SELECTOR_CF_SERVICE_ACCESS: {{on_demand_broker_plan_5_selector_cf_service_access}}
+      ON_DEMAND_BROKER_PLAN_5_SELECTOR_NAME: {{on_demand_broker_plan_5_selector_name}}
+      ON_DEMAND_BROKER_PLAN_5_SELECTOR_DESCRIPTION: {{on_demand_broker_plan_5_selector_description}}
+      ON_DEMAND_BROKER_PLAN_5_SELECTOR_FEATURES: {{on_demand_broker_plan_5_selector_features}}
+      ON_DEMAND_BROKER_PLAN_5_SELECTOR_INSTANCE_QUOTA: {{on_demand_broker_plan_5_selector_instance_quota}}
+      ON_DEMAND_BROKER_PLAN_5_SELECTOR_RABBITMQ_PERSISTENT_DISK_TYPE: {{on_demand_broker_plan_5_selector_rabbitmq_persistent_disk_type}}
+      ON_DEMAND_BROKER_PLAN_5_SELECTOR_RABBITMQ_NUMBER_OF_NODES: {{on_demand_broker_plan_5_selector_rabbitmq_number_of_nodes}}
+      ON_DEMAND_BROKER_PLAN_5_SELECTOR_RABBITMQ_CLUSTER_PARTITION_HANDLING_STRATEGY: {{on_demand_broker_plan_5_selector_rabbitmq_cluster_partition_handling_strategy}}
+      ON_DEMAND_BROKER_PLAN_5_SELECTOR_RABBITMQ_AZ_PLACEMENT: {{on_demand_broker_plan_5_selector_rabbitmq_az_placement}}
+      ON_DEMAND_BROKER_PLAN_5_SELECTOR_RABBITMQ_VM_TYPE: {{on_demand_broker_plan_5_selector_rabbitmq_vm_type}}
+      ON_DEMAND_BROKER_PLAN_5_SELECTOR_DISK_LIMIT_ACKNOWLEDGEMENT: {{on_demand_broker_plan_5_selector_disk_limit_acknowledgement}}
+      DISK_ALARM_THRESHOLD: {{disk_alarm_threshold}}
+      SERVER_ADMIN_USERNAME: {{server_admin_username}}
+      SERVER_ADMIN_PASSWORD: {{server_admin_password}}
+      RABBITMQ_SERVER_PLUGINS: {{rabbitmq_server_plugins}}
+      SSL_CERT_PEM: {{ssl_cert_pem}}
+      SSL_PRIVATE_KEY_PEM: {{ssl_private_key_pem}}
+      SSL_CACERT: {{ssl_cacert}}
+      SSL_VERIFY: {{ssl_verify}}
+      SSL_VERIFICATION_DEPTH: {{ssl_verification_depth}}
+      SSL_FAIL_IF_NO_PEER_CERT: {{ssl_fail_if_no_peer_cert}}
+      RABBITMQ_SERVER_COOKIE: {{rabbitmq_server_cookie}}
+      RABBITMQ_SERVER_CONFIG: {{rabbitmq_server_config}}
+      SSL_VERSIONS: {{ssl_versions}}
+      CLUSTER_PARTITION_HANDLING: {{cluster_partition_handling}}
+      RABBITMQ_SERVER_PORTS: {{rabbitmq_server_ports}}
+      RABBITMQ_SERVER_STATIC_IPS: {{rabbitmq_server_static_ips}}
+      RABBITMQ_HAPROXY_STATIC_IPS: {{rabbitmq_haproxy_static_ips}}
+      RABBITMQ_BROKER_DNS_HOST: {{rabbitmq_broker_dns_host}}
+      OPERATOR_SET_POLICY_ENABLED: {{operator_set_policy_enabled}}
+      POLICY_DEFINITION: {{policy_definition}}
+      GLOBAL_SERVICE_INSTANCE_QUOTA: {{global_service_instance_quota}}
+      RMQ_SERVER_INSTANCE_TYPE: {{rmq_server_instance_type}}
+      RMQ_SERVER_INSTANCES: {{rmq_server_instances}}
+      RMQ_SERVER_NODE_PERSISTENT_DISK_SIZE: {{rmq_server_node_persistent_disk_size}}
+      RMQ_HAPROXY_INSTANCE_TYPE: {{rmq_haproxy_instance_type}}
+      RMQ_HAPROXY_INSTANCES: {{rmq_haproxy_instances}}
+      RMQ_BROKER_INSTANCE_TYPE: {{rmq_broker_instance_type}}
+      RMQ_BROKER_INSTANCES: {{rmq_broker_instances}}
+      RMQ_ONDEMAND_INSTANCE_TYPE: {{rmq_ondemand_instance_type}}
+      RMQ_ONDEMAND_INSTANCES: {{rmq_ondemand_instances}}
+      RMQ_ONDEMAND_PERSISTENT_DISK_SIZE: {{rmq_ondemand_persistent_disk_size}}
+
+- name: apply-changes
+  plan:
+  - get: pcf-pipelines
+    passed: [config-product]
+    trigger: true
+  - task: apply-changes
+    file: pcf-pipelines/tasks/apply-changes/task.yml
+    params:
+      OPSMAN_USERNAME: {{opsman_admin_username}}
+      OPSMAN_PASSWORD: {{opsman_admin_password}}
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
+      OPSMAN_CLIENT_ID: ""
+      OPSMAN_CLIENT_SECRET: ""      
