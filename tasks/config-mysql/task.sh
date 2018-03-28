@@ -407,7 +407,7 @@ PRODUCT_RESOURCE=$(
     '
 )
 
-om-linux
+om-linux \
   --target "https://${OPSMAN_DOMAIN_OR_IP_ADDRESS}" \
   --skip-ssl-validation \
   --username "${OPSMAN_USERNAME}" \
