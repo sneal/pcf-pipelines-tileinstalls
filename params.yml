@@ -6,15 +6,15 @@ opsman_domain_or_ip_address:
 opsman_admin_username:
 opsman_admin_password:
 
+# required network config
+singleton_jobs_az:
+other_azs:
+network_name:
+
 # internal tile identifiers
 product_name: p-mysql
 product_identifier: p-mysql
 product_version: ^1\.10\..*$
-
-# required network config
-singleton_jobs_az: us-west-2a
-other_azs: us-west-2b,us-west-2c
-network_name: services
 
 # backup configuration
 backup_options: "disable" # (enable|disable)
@@ -92,15 +92,15 @@ cf_mysql_broker_allow_table_locks: true # (true|false)
 cf_mysql_broker_bind_hostname:
 
 # resource config
-mysql_server_instance_type: large.disk
+mysql_server_instance_type: automatic
 mysql_server_instances: 3
 mysql_persistent_disk_mb: 102400
-backup_prepare_instance_type: large.cpu
+backup_prepare_instance_type: automatic
 backup_prepare_instances: 0
 backup_prepare_persistent_disk_mb: 204800
-mysql_proxy_instance_type: small.disk
+mysql_proxy_instance_type: automatic
 mysql_proxy_instances: 2
-monitoring_instance_type: micro
+monitoring_instance_type: automatic
 monitoring_instances: 1
-mysql_broker_instance_type: small.disk
+mysql_broker_instance_type: automatic
 mysql_broker_instances: 2
