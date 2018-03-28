@@ -10,6 +10,7 @@ Create a Concourse parameter yaml file with the environment specific fields requ
 # legacy pivnet token for downloading tile
 pivnet_token: nGc-x0heYcz-dsxtNCyw
 
+# opsman connection info
 opsman_domain_or_ip_address: opsman.aws-pcf.example.com
 opsman_admin_username: admin
 opsman_admin_password: secret
