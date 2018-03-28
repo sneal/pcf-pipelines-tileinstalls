@@ -29,7 +29,6 @@ backups_s3_secret_access_key:
 backups_s3_region:
 backups_azure_storage_account:
 backups_azure_storage_access_key:
-backup_options_backup_all_masters:
 backups_azure_container:
 backups_azure_container_path:
 backups_azure_base_url:

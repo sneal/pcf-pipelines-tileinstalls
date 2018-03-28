@@ -15,7 +15,6 @@ PRODUCT_PROPERTIES=$(
     --arg backups_s3_region "$BACKUPS_S3_REGION" \
     --arg backups_azure_storage_account "$BACKUPS_AZURE_STORAGE_ACCOUNT" \
     --arg backups_azure_storage_access_key "$BACKUPS_AZURE_STORAGE_ACCESS_KEY" \
-    --arg backup_options_backup_all_masters "$BACKUP_OPTIONS_BACKUP_ALL_MASTERS" \
     --arg backups_azure_container "$BACKUPS_AZURE_CONTAINER" \
     --arg backups_azure_container_path "$BACKUPS_AZURE_CONTAINER_PATH" \
     --arg backups_azure_base_url "$BACKUPS_AZURE_BASE_URL" \
