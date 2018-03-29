@@ -26,7 +26,7 @@ properties_config=$(jq -n \
   --arg properties_smoke_tests_vm_type "$PROPERTIES_SMOKE_TESTS_VM_TYPE" \
 '{
   ".properties.az_multi_select": {
-    "value": $properties_az_multi_select
+    "value": ($properties_az_multi_select | split(",") | map(.))
   },
   ".properties.consul_server_vm_type": {
     "value": $properties_consul_server_vm_type
