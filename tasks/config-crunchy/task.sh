@@ -1,15 +1,15 @@
 #!/bin/bash
 
 properties_config=$(jq -n \
-  --arg properties_az_multi_select ""$PROPERTIES_AZ_MULTI_SELECT"\
-  --arg properties_consul_server_disk_type ""$PROPERTIES_CONSUL_SERVER_DISK_TYPE" \
-  --arg properties_consul_server_vm_type ""$PROPERTIES_CONSUL_SERVER_VM_TYPE" \
-  --arg properties_extra_large_disk_type ""$PROPERTIES_EXTRA_LARGE_DISK_TYPE" \
-  --arg properties_extra_large_postgresql_instance_count ""$PROPERTIES_EXTRA_LARGE_POSTGRESQL_INSTANCE_COUNT" \
-  --arg properties_extra_large_postgresql_service_quota ""$PROPERTIES_EXTRA_LARGE_POSTGRESQL_SERVICE_QUOTA" \
-  --arg properties_extra_large_vm_type ""$PROPERTIES_EXTRA_LARGE_VM_TYPE" \
-  --arg properties_large_disk_type ""$PROPERTIES_LARGE_DISK_TYPE" \
-  --arg properties_large_postgresql_instance_count ""$PROPERTIES_LARGE_POSTGRESQL_INSTANCE_COUNT" \
+  --arg properties_az_multi_select "$PROPERTIES_AZ_MULTI_SELECT" \
+  --arg properties_consul_server_disk_type "$PROPERTIES_CONSUL_SERVER_DISK_TYPE" \
+  --arg properties_consul_server_vm_type "$PROPERTIES_CONSUL_SERVER_VM_TYPE" \
+  --arg properties_extra_large_disk_type "$PROPERTIES_EXTRA_LARGE_DISK_TYPE" \
+  --arg properties_extra_large_postgresql_instance_count "$PROPERTIES_EXTRA_LARGE_POSTGRESQL_INSTANCE_COUNT" \
+  --arg properties_extra_large_postgresql_service_quota "$PROPERTIES_EXTRA_LARGE_POSTGRESQL_SERVICE_QUOTA" \
+  --arg properties_extra_large_vm_type "$PROPERTIES_EXTRA_LARGE_VM_TYPE" \
+  --arg properties_large_disk_type "$PROPERTIES_LARGE_DISK_TYPE" \
+  --arg properties_large_postgresql_instance_count "$PROPERTIES_LARGE_POSTGRESQL_INSTANCE_COUNT" \
   --arg properties_large_postgresql_service_quota "$PROPERTIES_LARGE_POSTGRESQL_SERVICE_QUOTA" \
   --arg properties_large_vm_type "$PROPERTIES_LARGE_VM_TYPE" \
   --arg properties_medium_disk_type "$PROPERTIES_MEDIUM_DISK_TYPE" \
@@ -106,10 +106,10 @@ resources_config="{
 }"
 
 network_config=$(jq -n \
-  --arg network_name "$NETWORK_NAME" \ 
-  --arg other_azs "$OTHER_AZS" \ 
-  --arg singleton_az "$SINGLETON_JOBS_AZ" \ 
-  --arg services_network_name "$SERVICES_NETWORK_NAME" \ 
+  --arg network_name "$NETWORK_NAME" \
+  --arg other_azs "$OTHER_AZS" \
+  --arg singleton_az "$SINGLETON_JOBS_AZ" \
+  --arg services_network_name "$SERVICES_NETWORK_NAME" \
 '
   {
     "network": {
