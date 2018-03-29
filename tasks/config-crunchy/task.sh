@@ -1,29 +1,29 @@
 #!/bin/bash
 
 properties_config=$(jq -n \
-  --arg properties_az_multi_select $PROPERTIES_AZ_MULTI_SELECT \
-  --arg properties_consul_server_disk_type $PROPERTIES_CONSUL_SERVER_DISK_TYPE \
-  --arg properties_consul_server_vm_type $PROPERTIES_CONSUL_SERVER_VM_TYPE \
-  --arg properties_extra_large_disk_type $PROPERTIES_EXTRA_LARGE_DISK_TYPE \
-  --arg properties_extra_large_postgresql_instance_count $PROPERTIES_EXTRA_LARGE_POSTGRESQL_INSTANCE_COUNT \
-  --arg properties_extra_large_postgresql_service_quota $PROPERTIES_EXTRA_LARGE_POSTGRESQL_SERVICE_QUOTA \
-  --arg properties_extra_large_vm_type $PROPERTIES_EXTRA_LARGE_VM_TYPE \
-  --arg properties_large_disk_type $PROPERTIES_LARGE_DISK_TYPE \
-  --arg properties_large_postgresql_instance_count $PROPERTIES_LARGE_POSTGRESQL_INSTANCE_COUNT \
-  --arg properties_large_postgresql_service_quota $PROPERTIES_LARGE_POSTGRESQL_SERVICE_QUOTA \
-  --arg properties_large_vm_type $PROPERTIES_LARGE_VM_TYPE \
-  --arg properties_medium_disk_type $PROPERTIES_MEDIUM_DISK_TYPE \
-  --arg properties_medium_postgresql_instance_count $PROPERTIES_MEDIUM_POSTGRESQL_INSTANCE_COUNT \
-  --arg properties_medium_postgresql_service_quota $PROPERTIES_MEDIUM_POSTGRESQL_SERVICE_QUOTA \
-  --arg properties_medium_vm_type $PROPERTIES_MEDIUM_VM_TYPE \
-  --arg properties_postgresql_haproxy_disk_type $PROPERTIES_POSTGRESQL_HAPROXY_DISK_TYPE \
-  --arg properties_postgresql_haproxy_vm_type $PROPERTIES_POSTGRESQL_HAPROXY_VM_TYPE \
-  --arg properties_small_disk_type $PROPERTIES_SMALL_DISK_TYPE \
-  --arg properties_small_postgresql_instance_count $PROPERTIES_SMALL_POSTGRESQL_INSTANCE_COUNT \
-  --arg properties_small_postgresql_service_quota $PROPERTIES_SMALL_POSTGRESQL_SERVICE_QUOTA \
-  --arg properties_small_vm_type $PROPERTIES_SMALL_VM_TYPE \
-  --arg properties_smoke_tests_disk_type $PROPERTIES_SMOKE_TESTS_DISK_TYPE \
-  --arg properties_smoke_tests_vm_type $PROPERTIES_SMOKE_TESTS_VM_TYPE \
+  --arg properties_az_multi_select ""$PROPERTIES_AZ_MULTI_SELECT"\
+  --arg properties_consul_server_disk_type ""$PROPERTIES_CONSUL_SERVER_DISK_TYPE" \
+  --arg properties_consul_server_vm_type ""$PROPERTIES_CONSUL_SERVER_VM_TYPE" \
+  --arg properties_extra_large_disk_type ""$PROPERTIES_EXTRA_LARGE_DISK_TYPE" \
+  --arg properties_extra_large_postgresql_instance_count ""$PROPERTIES_EXTRA_LARGE_POSTGRESQL_INSTANCE_COUNT" \
+  --arg properties_extra_large_postgresql_service_quota ""$PROPERTIES_EXTRA_LARGE_POSTGRESQL_SERVICE_QUOTA" \
+  --arg properties_extra_large_vm_type ""$PROPERTIES_EXTRA_LARGE_VM_TYPE" \
+  --arg properties_large_disk_type ""$PROPERTIES_LARGE_DISK_TYPE" \
+  --arg properties_large_postgresql_instance_count ""$PROPERTIES_LARGE_POSTGRESQL_INSTANCE_COUNT" \
+  --arg properties_large_postgresql_service_quota "$PROPERTIES_LARGE_POSTGRESQL_SERVICE_QUOTA" \
+  --arg properties_large_vm_type "$PROPERTIES_LARGE_VM_TYPE" \
+  --arg properties_medium_disk_type "$PROPERTIES_MEDIUM_DISK_TYPE" \
+  --arg properties_medium_postgresql_instance_count "$PROPERTIES_MEDIUM_POSTGRESQL_INSTANCE_COUNT" \
+  --arg properties_medium_postgresql_service_quota "$PROPERTIES_MEDIUM_POSTGRESQL_SERVICE_QUOTA" \
+  --arg properties_medium_vm_type "$PROPERTIES_MEDIUM_VM_TYPE" \
+  --arg properties_postgresql_haproxy_disk_type "$PROPERTIES_POSTGRESQL_HAPROXY_DISK_TYPE" \
+  --arg properties_postgresql_haproxy_vm_type "$PROPERTIES_POSTGRESQL_HAPROXY_VM_TYPE" \
+  --arg properties_small_disk_type "$PROPERTIES_SMALL_DISK_TYPE" \
+  --arg properties_small_postgresql_instance_count "$PROPERTIES_SMALL_POSTGRESQL_INSTANCE_COUNT" \
+  --arg properties_small_postgresql_service_quota "$PROPERTIES_SMALL_POSTGRESQL_SERVICE_QUOTA" \
+  --arg properties_small_vm_type "$PROPERTIES_SMALL_VM_TYPE" \
+  --arg properties_smoke_tests_disk_type "$PROPERTIES_SMOKE_TESTS_DISK_TYPE" \
+  --arg properties_smoke_tests_vm_type "$PROPERTIES_SMOKE_TESTS_VM_TYPE" \
 '{
   ".properties.az_multi_select": {
     "value": $properties_az_multi_select
