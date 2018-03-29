@@ -8,6 +8,7 @@
       OPSMAN_USERNAME: {{opsman_admin_username}}
       OPSMAN_PASSWORD: {{opsman_admin_password}}
       NETWORK_NAME: {{network_name}}
+      SERVICES_NETWORK_NAME: {{services_network_name}}
       OTHER_AZS: {{other_azs}}
       SINGLETON_JOBS_AZ: {{singleton_jobs_az}}
       PRODUCT_NAME: {{product_name}}
