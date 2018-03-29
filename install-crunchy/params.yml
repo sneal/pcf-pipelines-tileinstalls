@@ -15,7 +15,7 @@ services_network_name:
 # internal tile identifiers
 product_name: crunchy-postgresql
 product_identifier: crunchy-postgresql
-product_version: ^3\..*\..*$
+product_version: ^03\..*$
 
 # crunchy global properties
 properties_consul_server_vm_type: t2.micro
@@ -24,7 +24,7 @@ properties_postgresql_haproxy_vm_type: t2.micro
 properties_postgresql_haproxy_disk_type: 1024
 properties_smoke_tests_vm_type: t2.micro
 properties_smoke_tests_disk_type: 1024
-properties_az_multi_seclect:   # comma separate list of AZs from cloud config
+properties_az_multi_select:   # comma separate list of AZs from cloud config
 
 # crunchy small plan properties
 properties_small_vm_type: t2.micro

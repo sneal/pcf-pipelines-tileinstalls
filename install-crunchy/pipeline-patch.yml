@@ -1,7 +1,7 @@
 - op: add
   path: /jobs/name=config-product/plan/-
   value:
-  - task: config-tile
+    task: config-tile
     file: pcf-pipelines-tileinstalls/tasks/config-crunchy/task.yml
     params:
       OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
@@ -9,7 +9,7 @@
       OPSMAN_PASSWORD: {{opsman_admin_password}}
       NETWORK_NAME: {{network_name}}
       OTHER_AZS: {{other_azs}}
-      SINGLETON_JOBS_AZ: {{singleton_job_az}}
+      SINGLETON_JOBS_AZ: {{singleton_jobs_az}}
       PRODUCT_NAME: {{product_name}}
       PROPERTIES_AZ_MULTI_SELECT: {{properties_az_multi_select}}
       PROPERTIES_CONSUL_SERVER_DISK_TYPE: {{properties_consul_server_disk_type}}
@@ -19,18 +19,18 @@
       PROPERTIES_EXTRA_LARGE_POSTGRESQL_SERVICE_QUOTA: {{properties_extra_large_postgresql_service_quota}}
       PROPERTIES_EXTRA_LARGE_VM_TYPE: {{properties_extra_large_vm_type}}
       PROPERTIES_LARGE_DISK_TYPE: {{properties_large_disk_type}}
-      PROPERTIES_LARGE_POSTGRESQL_INSTANCE_COUNT: {{properties_large_postgres_instance_count}}
-      PROPERTIES_LARGE_POSTGRESQL_SERVICE_QUOTA: {{properties_large_postgres_service_quota}}
+      PROPERTIES_LARGE_POSTGRESQL_INSTANCE_COUNT: {{properties_large_postgresql_instance_count}}
+      PROPERTIES_LARGE_POSTGRESQL_SERVICE_QUOTA: {{properties_large_postgresql_service_quota}}
       PROPERTIES_LARGE_VM_TYPE: {{properties_large_vm_type}}
       PROPERTIES_MEDIUM_DISK_TYPE: {{properties_medium_disk_type}}
-      PROPERTIES_MEDIUM_POSTGRESQL_INSTANCE_COUNT: {{properties_medium_postgres_instance_count}}
-      PROPERTIES_MEDIUM_POSTGRESQL_SERVICE_QUOTA: {{properties_medium_postgres_service_quota}}
+      PROPERTIES_MEDIUM_POSTGRESQL_INSTANCE_COUNT: {{properties_medium_postgresql_instance_count}}
+      PROPERTIES_MEDIUM_POSTGRESQL_SERVICE_QUOTA: {{properties_medium_postgresql_service_quota}}
       PROPERTIES_MEDIUM_VM_TYPE: {{properties_medium_vm_type}}
-      PROPERTIES_POSTGRESQL_HAPROXY_DISK_TYPE: {{properties_postgres_haproxy_disk_type}}
-      PROPERTIES_POSTGRESQL_HAPROXY_VM_TYPE:  {{properties_postgres_haproxy_vm_type}}
+      PROPERTIES_POSTGRESQL_HAPROXY_DISK_TYPE: {{properties_postgresql_haproxy_disk_type}}
+      PROPERTIES_POSTGRESQL_HAPROXY_VM_TYPE:  {{properties_postgresql_haproxy_vm_type}}
       PROPERTIES_SMALL_DISK_TYPE: {{properties_small_disk_type}}
-      PROPERTIES_SMALL_POSTGRESQL_INSTANCE_COUNT: {{properties_small_postgres_instance_count}}
-      PROPERTIES_SMALL_POSTGRESQL_SERVICE_QUOTA: {{properties_small_postgres_service_quota}}
+      PROPERTIES_SMALL_POSTGRESQL_INSTANCE_COUNT: {{properties_small_postgresql_instance_count}}
+      PROPERTIES_SMALL_POSTGRESQL_SERVICE_QUOTA: {{properties_small_postgresql_service_quota}}
       PROPERTIES_SMALL_VM_TYPE: {{properties_small_vm_type}}
       PROPERTIES_SMOKE_TESTS_DISK_TYPE: {{properties_smoke_tests_disk_type}}
       PROPERTIES_SMOKE_TESTS_VM_TYPE: {{properties_smoke_tests_vm_type}}
